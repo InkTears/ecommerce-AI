@@ -33,7 +33,7 @@ This project is an E-commerce web application developed with the assistance of G
 1. Clone the repository:
     ```bash
     git clone https://github.com/InkTears/ecommerce-AI.git
-    cd your-repo-name
+    cd ecommerce-AI
     ```
 
 2. Install backend dependencies:
@@ -42,9 +42,8 @@ This project is an E-commerce web application developed with the assistance of G
     npm install
     ```
 
-3. Install frontend dependencies:
+3. Install frontend dependencies, in the root directory:
     ```bash
-    cd ../frontend
     npm install
     ```
 
@@ -52,13 +51,11 @@ This project is an E-commerce web application developed with the assistance of G
 
 1. Start the backend server:
     ```bash
-    cd backend
-    npm start
+    npm run server
     ```
 
 2. Start the frontend development server:
     ```bash
-    cd ../frontend
     npm start
     ```
 
