@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# E-commerce Web Application (GitHub Copilot)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Overview
 
-## Available Scripts
+This project is an E-commerce web application developed with the assistance of GitHub Copilot. The main goal of this project is to build an application with a product catalog, shopping cart, and payment system.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+1. **Product Catalog**: Display a list of products fetched from the backend.
+2. **Shopping Cart**: Add, remove, and view products in the cart.
+3. **Payment System**: Simulate a payment process with a modal form.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
+- **Node.js**: JavaScript runtime for building the backend.
+- **Express**: Web framework for Node.js.
+- **Database Interaction**: Functions generated with the help of GitHub Copilot.
 
-### `npm test`
+### Frontend
+- **React**: JavaScript library for building user interfaces.
+- **React Hooks**: Used for state management and side effects.
+- **React Modal**: For handling the payment modal.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js and npm installed on your machine.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/your-repo-name.git
+    cd your-repo-name
+    ```
 
-### `npm run eject`
+2. Install backend dependencies:
+    ```bash
+    cd backend
+    npm install
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Install frontend dependencies:
+    ```bash
+    cd ../frontend
+    npm install
+    ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Running the Application
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Start the backend server:
+    ```bash
+    cd backend
+    npm start
+    ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. Start the frontend development server:
+    ```bash
+    cd ../frontend
+    npm start
+    ```
 
-## Learn More
+3. Open your browser and navigate to `http://localhost:3000`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Project Structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Backend (`backend` directory)
+- `server.js`: Entry point for the backend server.
+- `routes/`: Contains the API routes.
+- `controllers/`: Contains the logic for handling requests.
+- `models/`: Contains the database models.
 
-### Code Splitting
+### Frontend (`frontend` directory)
+- `src/`: Contains the React application source code.
+  - `components/`: Contains React components.
+  - `App.js`: Main application component.
+  - `PaymentModal.js`: Component for the payment modal.
+  - `App.css`: Styles for the application.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Contributing
 
-### Analyzing the Bundle Size
+We welcome contributions! Please follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes and commit them (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Open a pull request.
 
-### Making a Progressive Web App
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project was developed with the assistance of GitHub Copilot.
