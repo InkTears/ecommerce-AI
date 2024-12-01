@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import './reset.css'; // Import the CSS reset file
-import './App.css'; // Import the main CSS file
+import './reset.css';
+import './App.css';
+import PaymentModal from './PaymentModal';
 
 function App() {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:5000/products')
@@ -36,13 +38,13 @@ function App() {
         setTotal(0);
     };
 
-    const simulatePayment = () => {
+    const handlePayment = (paymentInfo) => {
         if (cart.length === 0) {
             alert('Your cart is empty!');
             return;
         }
         const summary = cart.map(product => `${product.name} - $${product.price}`).join('\n');
-        alert(`Payment successful!\n\nSummary:\n${summary}\n\nTotal: $${total}`);
+        alert(`Payment successful!\n\nSummary:\n${summary}\n\nTotal: $${total}\n\nName: ${paymentInfo.name}\nAddress: ${paymentInfo.address}\nPayment Method: ${paymentInfo.paymentMethod}`);
         emptyCart();
     };
 
@@ -72,7 +74,12 @@ function App() {
             </ul>
             <h2>Total: ${total}</h2>
             <button onClick={emptyCart}>Empty Cart</button>
-            <button onClick={simulatePayment}>Simulate Payment</button>
+            <button onClick={() => setIsModalOpen(true)}>Simulate Payment</button>
+            <PaymentModal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                onPayment={handlePayment}
+            />
         </div>
     );
 }
