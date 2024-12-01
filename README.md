@@ -32,7 +32,7 @@ This project is an E-commerce web application developed with the assistance of G
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/InkTears/ecommerce-AI.git
     cd your-repo-name
     ```
 
@@ -78,20 +78,6 @@ This project is an E-commerce web application developed with the assistance of G
   - `App.js`: Main application component.
   - `PaymentModal.js`: Component for the payment modal.
   - `App.css`: Styles for the application.
-
-## Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes and commit them (`git commit -m 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 ---
 
