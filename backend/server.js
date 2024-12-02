@@ -26,7 +26,7 @@ const writeData = (data) => {
 
 app.get('/products', (req, res) => {
     const products = readData();
-    res.json(products);
+    res.status(200).json(products);
 });
 
 app.post('/products', (req, res) => {
@@ -34,7 +34,7 @@ app.post('/products', (req, res) => {
     const newProduct = { ...req.body, id: uuidv4() }; // Ajouter un identifiant unique
     products.push(newProduct);
     writeData(products);
-    res.json(newProduct);
+    res.status(201).json(newProduct);
 });
 
 app.listen(5000, () => {

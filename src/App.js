@@ -1,85 +1,115 @@
-import React, { useEffect, useState } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import './reset.css';
 import './App.css';
 import PaymentModal from './PaymentModal';
+import ProductList from './ProductList';
+import Cart from './Cart';
+
+const initialState = {
+    products: [],
+    cart: [],
+    total: 0,
+    isModalOpen: false,
+    isLoading: true
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'SET_PRODUCTS':
+            return { ...state, products: action.payload };
+        case 'ADD_TO_CART':
+            const newProduct = { ...action.payload, cartId: uuidv4() };
+            return {
+                ...state,
+                cart: [...state.cart, newProduct],
+                total: state.total + action.payload.price
+            };
+        case 'REMOVE_FROM_CART':
+            const updatedCart = state.cart.filter(product => product.cartId !== action.payload);
+            const productToRemove = state.cart.find(product => product.cartId === action.payload);
+            return {
+                ...state,
+                cart: updatedCart,
+                total: productToRemove ? state.total - productToRemove.price : state.total
+            };
+        case 'EMPTY_CART':
+            return { ...state, cart: [], total: 0 };
+        case 'TOGGLE_MODAL':
+            return { ...state, isModalOpen: !state.isModalOpen };
+        case 'SET_LOADING':
+            return { ...state, isLoading: action.payload };
+        case 'SET_CART':
+            return { ...state, cart: action.payload, total: action.payload.reduce((acc, product) => acc + product.price, 0) };
+        default:
+            return state;
+    }
+}
 
 function App() {
-    const [products, setProducts] = useState([]);
-    const [cart, setCart] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
+        dispatch({ type: 'SET_LOADING', payload: true });
         axios.get('http://localhost:5000/products')
             .then(response => {
-                setProducts(response.data);
+                dispatch({ type: 'SET_PRODUCTS', payload: response.data });
+                dispatch({ type: 'SET_LOADING', payload: false });
             })
             .catch(error => {
-                console.error('There was an error fetching the products!', error);
+                console.error('Error fetching products', error);
+                dispatch({ type: 'SET_LOADING', payload: false });
             });
     }, []);
 
+    useEffect(() => {
+        try {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                dispatch({ type: 'SET_CART', payload: JSON.parse(savedCart) });
+            }
+        } catch (error) {
+            console.error('Failed to retrieve cart from localStorage:', error);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('cart', JSON.stringify(state.cart));
+        } catch (error) {
+            console.error('Failed to save cart to localStorage:', error);
+        }
+    }, [state.cart]);
+
     const addToCart = (product) => {
-        const productWithId = { ...product, cartId: uuidv4() };
-        setCart([...cart, productWithId]);
-        setTotal(total + product.price);
-    };
-
-    const removeFromCart = (cartId) => {
-        const productToRemove = cart.find(product => product.cartId === cartId);
-        setCart(cart.filter(product => product.cartId !== cartId));
-        setTotal(total - productToRemove.price);
-    };
-
-    const emptyCart = () => {
-        setCart([]);
-        setTotal(0);
+        if (!product || typeof product.price !== 'number' || product.price <= 0) {
+            console.error('Invalid product');
+            return;
+        }
+        dispatch({ type: 'ADD_TO_CART', payload: product });
     };
 
     const handlePayment = (paymentInfo) => {
-        if (cart.length === 0) {
+        if (state.cart.length === 0) {
             alert('Your cart is empty!');
             return;
         }
-        const summary = cart.map(product => `${product.name} - $${product.price}`).join('\n');
-        alert(`Payment successful!\n\nSummary:\n${summary}\n\nTotal: $${total}\n\nName: ${paymentInfo.name}\nAddress: ${paymentInfo.address}\nPayment Method: ${paymentInfo.paymentMethod}`);
-        emptyCart();
+        const summary = state.cart.map(product => `${product.name} - $${product.price}`).join('\n');
+        alert(`Payment successful!\n\nSummary:\n${summary}\n\nTotal: $${state.total}\n\nName: ${paymentInfo.name}\nAddress: ${paymentInfo.address}\nPayment Method: ${paymentInfo.paymentMethod}`);
+        dispatch({ type: 'EMPTY_CART' });
     };
 
     return (
         <div className="App">
-            <h1>Products</h1>
-            <ul>
-                {products.map((product) => (
-                    <li key={product.id}>
-                        <h2>{product.name}</h2>
-                        <p>{product.description}</p>
-                        <p>Price: ${product.price}</p>
-                        <button onClick={() => addToCart(product)}>Add to Cart</button>
-                    </li>
-                ))}
-            </ul>
-            <h1>Cart</h1>
-            <ul>
-                {cart.map((product) => (
-                    <li key={product.cartId}>
-                        <h2>{product.name}</h2>
-                        <p>{product.description}</p>
-                        <p>Price: ${product.price}</p>
-                        <button onClick={() => removeFromCart(product.cartId)}>Remove from Cart</button>
-                    </li>
-                ))}
-            </ul>
-            <h2>Total: ${total}</h2>
-            <button onClick={emptyCart}>Empty Cart</button>
-            <button onClick={() => setIsModalOpen(true)}>Simulate Payment</button>
-            <PaymentModal
-                isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
-                onPayment={handlePayment}
-            />
+            {state.isLoading ? (
+                <div>Loading products...</div>
+            ) : (
+                <ProductList products={state.products} onAddToCart={addToCart} />
+            )}
+            <Cart cart={state.cart} onRemoveFromCart={(cartId) => dispatch({ type: 'REMOVE_FROM_CART', payload: cartId })} total={state.total} onEmptyCart={() => dispatch({ type: 'EMPTY_CART' })} />
+            <button onClick={() => dispatch({ type: 'TOGGLE_MODAL' })}>Simulate Payment</button>
+            <PaymentModal isOpen={state.isModalOpen} onRequestClose={() => dispatch({ type: 'TOGGLE_MODAL' })} onPayment={handlePayment} />
         </div>
     );
 }
