@@ -3,7 +3,6 @@ const path = require('path');
 
 const dataFilePath = path.join(__dirname, 'products.json');
 
-// Helper function to read data from JSON file
 const readData = () => {
     if (!fs.existsSync(dataFilePath)) {
         return [];
@@ -12,19 +11,18 @@ const readData = () => {
     return JSON.parse(data);
 };
 
-// Helper function to write data to JSON file
 const writeData = (data) => {
     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
 };
 
-const newProduct = {
-    name: 'Sample Product',
-    price: 100,
-    description: 'This is a sample product'
+const addProduct = (product) => {
+    const products = readData();
+    products.push(product);
+    writeData(products);
 };
 
-const products = readData();
-products.push(newProduct);
-writeData(products);
-
-console.log('Product added successfully');
+module.exports = {
+    readData,
+    writeData,
+    addProduct
+};

@@ -3,9 +3,9 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import './reset.css';
 import './App.css';
-import PaymentModal from './PaymentModal';
-import ProductList from './ProductList';
-import Cart from './Cart';
+import PaymentModal from './PaymentModal.js';
+import ProductList from './ProductList.js';
+import Cart from './Cart.js';
 
 const initialState = {
     products: [],
